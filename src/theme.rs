@@ -73,6 +73,7 @@ impl Default for ColorPalette {
 pub struct TerminalTheme {
     palette: Box<ColorPalette>,
     ansi256_colors: HashMap<u8, Color32>,
+    bg_multiply: f32
 }
 
 impl Default for TerminalTheme {
@@ -80,15 +81,17 @@ impl Default for TerminalTheme {
         Self {
             palette: Box::<ColorPalette>::default(),
             ansi256_colors: TerminalTheme::get_ansi256_colors(),
+            bg_multiply: 1.0
         }
     }
 }
 
 impl TerminalTheme {
-    pub fn new(palette: Box<ColorPalette>) -> Self {
+    pub fn new(palette: Box<ColorPalette>, bg_multiply: Option<f32>) -> Self {
         Self {
             palette,
             ansi256_colors: TerminalTheme::get_ansi256_colors(),
+            bg_multiply: bg_multiply.unwrap_or(1.0)
         }
     }
 
@@ -118,6 +121,10 @@ impl TerminalTheme {
         }
 
         ansi256_colors
+    }
+
+    pub fn background_multiplier(&self) -> f32 {
+        self.bg_multiply
     }
 
     pub fn get_color(&self, c: ansi::Color) -> Color32 {

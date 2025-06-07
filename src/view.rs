@@ -226,8 +226,9 @@ impl<'a> TerminalView<'a> {
         let layout_max = layout.rect.max;
         let cell_height = content.terminal_size.cell_height as f32;
         let cell_width = content.terminal_size.cell_width as f32;
+        let bg_multiplier = self.theme.background_multiplier();
         let global_bg =
-            self.theme.get_color(Color::Named(NamedColor::Background));
+            self.theme.get_color(Color::Named(NamedColor::Background)).gamma_multiply(bg_multiplier);
 
         let mut shapes = vec![Shape::Rect(RectShape::filled(
             Rect::from_min_max(layout_min, layout_max),
